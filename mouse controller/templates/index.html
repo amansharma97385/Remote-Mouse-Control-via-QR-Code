@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mouse Pad</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .mousestruct {
+            border: 1px solid #ccc;
+            padding: 20px;
+            margin: 20px;
+        }
+        .leftButton, .rightButton, .touchArea {
+            padding: 10px;
+            margin: 5px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .leftButton {
+            background-color: #4CAF50; /* Green */
+            color: white;
+        }
+        .rightButton {
+            background-color: #f44336; /* Red */
+            color: white;
+        }
+        .touchArea {
+            width: 200px;
+            height: 200px;
+            border: 1px solid #000;
+            background-color: #e7e7e7;
+        }
+    </style>
+</head>
+<body>
+    <div class="mousestruct">
+        <div class="leftButton">Left Click</div>
+        <div class="rightButton">Right Click</div>
+        <div class="touchArea">Touch Area</div>
+    </div>
+    <script>
+        document.querySelector('.leftButton').addEventListener('click', function() {
+            fetch('/left_click', { method: 'POST' });
+        });
+        document.querySelector('.rightButton').addEventListener('click', function() {
+            fetch('/right_click', { method: 'POST' });
+        });
+        document.querySelector('.touchArea').addEventListener('touchmove', function(event) {
+            let touch = event.touches[0];
+            let x = touch.clientX;
+            let y = touch.clientY;
+            fetch('/move_mouse', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ x: x, y: y })
+            });
+        });
+    </script>
+</body>
+</html>
